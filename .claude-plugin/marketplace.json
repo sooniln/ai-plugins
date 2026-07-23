@@ -1,0 +1,13 @@
+{
+  "name": "sooniln-plugins",
+  "owner": {
+    "name": "Soonil Nagarkar"
+  },
+  "plugins": [
+    {
+      "name": "jit-asm-capture",
+      "description": "Skill for JIT ASM capture and analysis",
+      "source": "./jit-asm-capture"
+    }
+  ]
+}

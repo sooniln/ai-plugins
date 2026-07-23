@@ -1,0 +1,48 @@
+// Template for capturing the JIT-compiled (C2) assembly of a single method under test.
+//
+// Key design points:
+//  - Ensure that an accumulator is NOT a local variable that will be captured by a lambda/inner class. A captured
+//    local may get boxed into a synthetic wrapper object, which pollutes the disassembly with an allocation/getfield
+//    that has nothing to do with the code you're actually inspecting.
+//  - The method under test does ONLY the operation you care about. C2 can inline arbitrarily deep regardless of
+//    whether the inlined method has its own compiled nmethod, so restricting -XX:CompileCommand=compileonly to just
+//    this wrapper still yields a single, fully inlined nmethod for the whole call chain.
+
+import java.util.Random;
+
+public class Harness {
+    // an example of a method under test - normally the method under test may be found elsewhere in
+    // the classpath, but it's possible the user has asked you to capture assembly for a stand-alone
+    // method. note the use of an accumulator to ensure that the compiler does not falsely eliminate
+    // code.
+    long iterate(int[] data) {
+        long sum = 0;
+        for (int i = 0; i < data.length; i++) {
+            sum += data[i];
+        }
+        return sum;
+    }
+
+    public static void main(String[] args) {
+        // 10_000 is comfortably above the default C2 compilation threshold -- enough reps to guarantee C2 promotion
+        // without wasting time/log volume on unnecessary extra reps.
+        int reps = args.length > 0 ? Integer.parseInt(args[0]) : 10_000;
+
+        // construct any data required by the method under test. the following is just an example, and should be
+        // replaced as appropriate.
+        int size = 10_000;
+        Random rnd = new Random(123);
+        int[] data = new int[size];
+        for (int i = 0; i < size; i++) data[i] = rnd.nextInt();
+
+        // execute the method under test for the given number of reps. ensure that an accumulator is used.
+        Harness h = new Harness();
+        long accumulator = ;
+        for (int i = 0; i < reps; i++) {
+            accumulator += h.iterate(data);
+        }
+
+        // output any accumulator variables so code is not eliminated.
+        System.out.println("acc=" + accumulator);
+    }
+}
