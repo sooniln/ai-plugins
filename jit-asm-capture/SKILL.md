@@ -65,7 +65,8 @@ classpath component to the same Windows form before joining with `;`, including 
 
 ### Step 5 - Run the harness
 
-Run the harness with the following command line flags, and capture the output for examination:
+Run the harness with the following command line flags, and capture the output for examination. Assume 
+hsdis is present until proved otherwise (no pre-emptive checking).
 
 - `-XX:+UnlockDiagnosticVMOptions` unlocks diagnostic-only VM flags, required to use `-XX:+PrintAssembly` and the other
   diagnostic flags below.
