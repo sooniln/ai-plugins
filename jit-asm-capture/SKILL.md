@@ -1,6 +1,6 @@
 ---
 name: jit-asm-capture
-description: Capture the JIT-compiled (C2) machine code of a method in any HotSpot JVM. Use to examine generated assembly and inlining behavior, understand auto-vectorization, scalar-replacement, and performance behavior, or to compare assembly and performance between multiple implementations.
+description: Capture the JIT-compiled (C2) machine code of a method in any HotSpot JVM. Use to examine generated assembly, bounds checking elimination, and inlining behavior, understand auto-vectorization, scalar-replacement, and performance behavior, or to compare assembly and performance between multiple implementations.
 license: MIT
 metadata:
   author: Soonil Nagarkar
