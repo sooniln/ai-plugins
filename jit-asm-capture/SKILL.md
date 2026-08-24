@@ -154,16 +154,3 @@ JDK installation:
 This may require administrator privileges (confirm, don't assume), but should be the preferred option as it means the
 library will always be available in the future. If unable to obtain administrator privileges, you can also copy the
 library into the same directory as the harness, where `java` should be able to find it.
-
-# Pseudo-C Representation
-
-The user may ask you to represent the assembly in a format close to C for easier readability. In this case, follow these
-rules:
-
-1. Use std types (int32_t, uint32_t, etc.)
-2. Local variables must correspond to register usage
-3. Prefer to avoid goto usage unless there is no other option to accurately represent the real assembly
-4. Use idiomatic constructs (++i, etc.) where applicable
-5. The structure of the pseudo-C should attempt to mirror the structure of the assembly
-6. Double check generated pseudo-C to ensure you have made no mistakes, no inaccurate comments, no inaccurate 
-   representations of the assembly, and all rules listed here are obeyed.

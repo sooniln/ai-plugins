@@ -8,6 +8,11 @@
       "name": "jit-asm-capture",
       "description": "Skill for JIT ASM capture and analysis",
       "source": "./jit-asm-capture"
+    },
+    {
+      "name": "pseudo-c",
+      "description": "Skill for representing assembly as pseudo-C",
+      "source": "./pseudo-c"
     }
   ]
 }
