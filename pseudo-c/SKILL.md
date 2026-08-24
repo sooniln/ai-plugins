@@ -16,8 +16,9 @@ rules:
 2. If the assembly contains JVM uncommon traps or safepoint polls, represent these as uncommon_trap()/safepoint_poll()
    functions. JVM heap allocations should be represented as jvm_alloc() (represents TLAB bump + fallback).
 3. Local variables must correspond to register usage.
-4. Prefer to avoid goto usage unless there is no other option to accurately represent the real assembly.
+4. Accurately represent bounds checks and batching logic.
 5. Use idiomatic constructs (++i, etc.) where applicable.
-6. The structure of the pseudo-C should attempt to mirror the structure of the assembly.
-7. Double check generated pseudo-C to ensure you have made no mistakes, no inaccurate comments, no inaccurate
+6. Prefer to avoid goto usage unless there is no other option to accurately represent the real assembly.
+7. The structure of the pseudo-C should mirror the structure of the assembly.
+8. Double check generated pseudo-C to ensure you have made no mistakes, no inaccurate comments, no inaccurate
    representations of the assembly, and all rules listed here are obeyed.
