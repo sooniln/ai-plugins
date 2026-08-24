@@ -166,4 +166,4 @@ rules:
 4. Use idiomatic constructs (++i, etc.) where applicable
 5. The structure of the pseudo-C should attempt to mirror the structure of the assembly
 6. Double check generated pseudo-C to ensure you have made no mistakes, no inaccurate comments, no inaccurate 
-   representations of the assembly.
+   representations of the assembly, and all rules listed here are obeyed.
