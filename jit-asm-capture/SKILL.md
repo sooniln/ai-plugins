@@ -66,7 +66,8 @@ classpath component to the same Windows form before joining with `;`, including 
 ### Step 5 - Run the harness
 
 Run the harness with the following command line flags, and capture the output for examination. Assume 
-hsdis is present until proved otherwise (no pre-emptive checking).
+hsdis is present until proved otherwise (no pre-emptive checking). Prefer to save the output to a temporary file as 
+it is highly likely you will need to refer back to it.
 
 - `-XX:+UnlockDiagnosticVMOptions` unlocks diagnostic-only VM flags, required to use `-XX:+PrintAssembly` and the other
   diagnostic flags below.
@@ -126,6 +127,10 @@ Some other notes on output:
   compile before the last one for that method with suspicion; only the final surviving compile is
   representative.
 
+Of critical importance when analyzing the assembly - DO NOT MAKE unverified assumptions! Every conclusion you come to
+should be supported by evidence. If it is not, make this clear to the user. Offer options for further validation where
+applicable.
+
 #### If hsdis is missing
 
 If the prompt genuinely needs real assembly mnemonics, check if there is a copy of hsdis in the current project or on
@@ -135,7 +140,7 @@ like to proceed:
 - **They point to a copy of hsdis.**
 - **You download a prebuilt copy from an online source on their behalf.** If they choose this, tell them plainly first:
   this means fetching and loading a native shared library you haven't built or reviewed directly into the JVM process's
-  address space -- a malicious version could execute arbitrary code in that process. Only do this with their explicit
+  address space - a malicious version could execute arbitrary code in that process. Only do this with their explicit
   permission, prefer a source they'd recognize as reputable, and say where you got it from.
 
 Once you know where the copy is located, verify that it is correct for the JVM architecture -- `hsdis-<arch>.dll` on
@@ -149,3 +154,16 @@ JDK installation:
 This may require administrator privileges (confirm, don't assume), but should be the preferred option as it means the
 library will always be available in the future. If unable to obtain administrator privileges, you can also copy the
 library into the same directory as the harness, where `java` should be able to find it.
+
+# Pseudo-C Representation
+
+The user may ask you to represent the assembly in a format close to C for easier readability. In this case, follow these
+rules:
+
+1. Use std types (int32_t, uint32_t, etc.)
+2. Local variables must correspond to register usage
+3. Prefer to avoid goto usage unless there is no other option to accurately represent the real assembly
+4. Use idiomatic constructs (++i, etc.) where applicable
+5. The structure of the pseudo-C should attempt to mirror the structure of the assembly
+6. Double check generated pseudo-C to ensure you have made no mistakes, no inaccurate comments, no inaccurate 
+   representations of the assembly.
