@@ -12,14 +12,13 @@ metadata:
 The user may ask you to represent assembly in a format close to C for easier readability. In this case, follow these
 rules:
 
-1. Use std types (int32_t, uint32_t, etc.).
-2. If the assembly contains JVM uncommon traps or safepoint polls, represent these as uncommon_trap()/safepoint_poll()
-   functions. JVM heap allocations should be represented as jvm_alloc() (represents TLAB bump + fallback).
-3. Local variables must correspond to register usage.
-4. Use idiomatic constructs (++i, etc.) where applicable.
-5. Prefer to avoid goto usage unless there is no other option to accurately represent the real assembly.
-6. Accurately represent bounds checks and batching logic.
-7. The structure of the pseudo-C MUST be a 1:1 representation of the structure of the assembly. Do not elide or
+1. The structure of the pseudo-C MUST be a 1:1 representation of the structure of the assembly. Do not elide or
    misrepresent assembly in order to make the higher level code more convenient.
-8. Double check generated pseudo-C to ensure you have made no mistakes, no inaccurate comments, no inaccurate
+2. Variables MUST correspond to register usage - do not invent variables that are not backed by a register.
+3. You may represent low level JVM operations (like uncommon traps / safepoint polls / allocations) via functions calls
+   such as uncommon_trap()/safepoint_poll()/jvm_alloc().
+4. Use std types (int32_t, uint32_t, etc.).
+5. Use idiomatic constructs (++i, etc.) where applicable.
+6. Use if/while/do/for statements where they accurately represent the assembly without a loss of 1:1 fidelity.
+7. Double check generated pseudo-C to ensure you have made no mistakes, no inaccurate comments, no inaccurate
    representations of the assembly, and all rules listed here are obeyed.
