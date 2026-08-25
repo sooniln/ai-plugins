@@ -26,7 +26,24 @@ the latest version available:
 - **macOS**: `$JAVA_HOME`, `~/.jdks/*`, output of `/usr/libexec/java_home -V`
 - **Linux**: `$JAVA_HOME`, `~/.jdks/*`, `/usr/lib/jvm/*`
 
-### Step 2 - Determine the classpath to use
+### Step 2 - Determine the harness to use to run the code/method
+
+Options are:
+
+1. Reusing an existing harness (a JMH benchmark, a harness that already exists from a previous capture - perhaps in 
+   a temporary directory or your scratchpad)
+2. Create a new harness
+
+It should generally be clear from context what the best path is, but ask the user if unclear. When using a JMH benchmark
+as the harness, the jvmArgs field in the JMH @Fork annotation can be used to inject the command line flags from step 3.
+
+#### Step 2.1 - Creating a new harness
+
+Use `assets/Harness.java.template` as a base to construct the harness Java file (you may be able to more quickly
+re-use/edit a pre-existing harness from a prior run as well). Prefer to locate this within your scratchpad or at a
+location for temporary files, which allows for later re-use. Add whatever imports may be required.
+
+#### Step 2.2 - Determine the classpath to use for the new harness
 
 Make sure the code under test is built (so that its jar/class files are up-to-date and available), and find its
 classpath. How you get there is project-specific -- Maven, Gradle, plain `javac`, whatever the target project uses. If
@@ -49,21 +66,10 @@ the method you're inspecting is self-contained (no dependency on project code), 
 - **Other build tools** (Bazel, Ant, sbt, ...): not covered in depth -- look for that tool's own
   classpath/dependency-listing facility.
 
-### Step 3 - Construct a harness to run the method under test
-
-Use `assets/Harness.java.template` as a base to construct the harness Java file (you may be able to more quickly
-re-use/edit a pre-existing harness from a prior run as well). Prefer to locate this within your scratchpad or at a
-location for temporary files, which allows for later re-use. Add whatever imports may be required.
-
-### Step 4 - Compile the harness
-
-Use the Java SDK and classpath as determined in steps 1 and 2, compile with `javac`, and ensure compilation is
-error-free.
-
 **Windows gotcha -- don't mix POSIX/Windows path forms in the same `-cp`/`-classpath` string.** Fix: convert every
 classpath component to the same Windows form before joining with `;`, including the harness's own output directory.
 
-### Step 5 - Run the harness
+### Step 3 - Run the harness
 
 Run the harness with the following command line flags, and capture the output for examination. Assume 
 hsdis is present until proved otherwise (no pre-emptive checking). Prefer to save the output to a temporary file as 
@@ -131,7 +137,7 @@ Of critical importance when analyzing the assembly - DO NOT MAKE unverified assu
 should be supported by evidence. If it is not, make this clear to the user. Offer options for further validation where
 applicable.
 
-#### If hsdis is missing
+#### Step 6.1 - If hsdis is missing
 
 If the prompt genuinely needs real assembly mnemonics, check if there is a copy of hsdis in the current project or on
 the current working path. If not, tell the user the hsdis disassembler library isn't present/working and ask how they'd

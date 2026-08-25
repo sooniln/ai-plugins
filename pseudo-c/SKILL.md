@@ -18,7 +18,7 @@ rules:
 3. You may represent low level JVM operations (like uncommon traps / safepoint polls / allocations) via functions calls
    such as uncommon_trap()/safepoint_poll()/jvm_alloc().
 4. Use std types (int32_t, uint32_t, etc.).
-5. Use idiomatic constructs (++i, etc.) where applicable.
+5. Use idiomatic constructs (++i, min()/max() pseudo-functions, etc.) where applicable.
 6. Use if/while/do/for statements where they accurately represent the assembly without a loss of 1:1 fidelity.
 7. Double check generated pseudo-C to ensure you have made no mistakes, no inaccurate comments, no inaccurate
    representations of the assembly, and all rules listed here are obeyed.
